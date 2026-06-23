@@ -24,6 +24,7 @@ class Business extends Model
         'logo_path', 'industry', 'timezone', 'booking_type', 'booking_url',
         'calendly_url', 'sms_template', 'whatsapp_template', 'whatsapp_enabled',
         'auto_respond_enabled', 'opening_hours', 'settings', 'onboarded_at',
+        'trial_ends_at',
     ];
 
     protected function casts(): array

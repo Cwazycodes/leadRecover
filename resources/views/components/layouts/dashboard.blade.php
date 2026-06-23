@@ -14,7 +14,9 @@
     @stack('head')
 </head>
 <body class="min-h-screen bg-slate-50 font-sans text-slate-700 antialiased">
-@php($currentBusiness = ($currentBusiness ?? null) ?? auth()->user()?->business)
+@php
+    $currentBusiness ??= auth()->user()?->business;
+@endphp
 <div x-data="{ sidebar: false }" class="min-h-screen lg:flex">
 
     {{-- Sidebar --}}

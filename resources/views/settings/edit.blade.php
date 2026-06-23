@@ -77,7 +77,7 @@
                   class="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 @csrf @method('PUT')
                 <h2 class="text-lg font-semibold text-slate-900">Messaging</h2>
-                <p class="rounded-lg bg-slate-50 p-3 text-xs text-slate-500">Available tokens: <code class="font-mono text-brand-600">{{ '{{name}}' }}</code>, <code class="font-mono text-brand-600">{{ '{{business}}' }}</code>, <code class="font-mono text-brand-600">{{ '{{booking_link}}' }}</code></p>
+                <p class="rounded-lg bg-slate-50 p-3 text-xs text-slate-500">Available tokens: <code class="font-mono text-brand-600">@{{name}}</code>, <code class="font-mono text-brand-600">@{{business}}</code>, <code class="font-mono text-brand-600">@{{booking_link}}</code></p>
 
                 <label class="flex items-center gap-3">
                     <input type="checkbox" name="auto_respond_enabled" value="1" @checked($business->auto_respond_enabled) class="rounded border-slate-300 text-brand-600 focus:ring-brand-500">

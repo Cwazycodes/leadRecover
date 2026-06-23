@@ -25,10 +25,13 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'business_id' => null,
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => 'owner',
+            'is_platform_admin' => false,
             'remember_token' => Str::random(10),
         ];
     }
@@ -40,6 +43,18 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * A platform owner who administers the whole SaaS (no business).
+     */
+    public function platformAdmin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'business_id' => null,
+            'role' => 'owner',
+            'is_platform_admin' => true,
         ]);
     }
 }

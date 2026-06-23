@@ -13,7 +13,7 @@ class LeadRepository implements LeadRepositoryInterface
         $sort = $filters['sort'] ?? 'recent';
 
         return $business->leads()
-            ->with('assignedUser')
+            ->with(['assignedUser', 'business'])
             ->status($filters['status'] ?? null)
             ->search($filters['search'] ?? null)
             ->when($sort === 'value', fn ($q) => $q->orderByDesc('estimated_value'))
