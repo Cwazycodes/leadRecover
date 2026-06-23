@@ -14,7 +14,5 @@ class LeadResponded
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public Lead $lead, public Interaction $interaction)
-    {
-    }
+    public function __construct(public Lead $lead, public Interaction $interaction) {}
 }

@@ -9,9 +9,7 @@ use Illuminate\Contracts\View\View;
 
 class DashboardController extends Controller
 {
-    public function __construct(protected AnalyticsService $analytics)
-    {
-    }
+    public function __construct(protected AnalyticsService $analytics) {}
 
     public function index(): View
     {

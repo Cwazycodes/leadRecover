@@ -6,6 +6,9 @@ use App\Jobs\MarkLeadStaleJob;
 use App\Jobs\SendFollowUpReminderJob;
 use App\Models\Business;
 use App\Models\Lead;
+use App\Services\LeadService;
+use App\Services\MessageComposer;
+use App\Services\TwilioService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -23,9 +26,9 @@ class FollowUpReminderTest extends TestCase
         ]);
 
         (new SendFollowUpReminderJob($lead, 1))->handle(
-            app(\App\Services\TwilioService::class),
-            app(\App\Services\LeadService::class),
-            app(\App\Services\MessageComposer::class),
+            app(TwilioService::class),
+            app(LeadService::class),
+            app(MessageComposer::class),
         );
 
         $this->assertDatabaseHas('interactions', ['lead_id' => $lead->id, 'direction' => 'outbound']);
@@ -42,9 +45,9 @@ class FollowUpReminderTest extends TestCase
         ]);
 
         (new SendFollowUpReminderJob($lead, 2))->handle(
-            app(\App\Services\TwilioService::class),
-            app(\App\Services\LeadService::class),
-            app(\App\Services\MessageComposer::class),
+            app(TwilioService::class),
+            app(LeadService::class),
+            app(MessageComposer::class),
         );
 
         $this->assertDatabaseMissing('interactions', ['lead_id' => $lead->id, 'direction' => 'outbound']);
@@ -55,7 +58,7 @@ class FollowUpReminderTest extends TestCase
         $business = Business::factory()->create();
         $lead = Lead::factory()->for($business)->create(['status' => 'contacted', 'responded_at' => null]);
 
-        (new MarkLeadStaleJob($lead))->handle(app(\App\Services\LeadService::class));
+        (new MarkLeadStaleJob($lead))->handle(app(LeadService::class));
 
         $this->assertSame('stale', $lead->fresh()->status);
     }
@@ -65,7 +68,7 @@ class FollowUpReminderTest extends TestCase
         $business = Business::factory()->create();
         $lead = Lead::factory()->for($business)->create(['status' => 'booked', 'responded_at' => now()]);
 
-        (new MarkLeadStaleJob($lead))->handle(app(\App\Services\LeadService::class));
+        (new MarkLeadStaleJob($lead))->handle(app(LeadService::class));
 
         $this->assertSame('booked', $lead->fresh()->status);
     }

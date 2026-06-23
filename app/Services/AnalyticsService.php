@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Business;
+use App\Models\Call;
 use App\Models\Lead;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -23,7 +24,7 @@ class AnalyticsService
         $totalLeads = (clone $leads)->count();
 
         $callsMissed = $business->calls()
-            ->whereIn('status', \App\Models\Call::MISSED_STATUSES)
+            ->whereIn('status', Call::MISSED_STATUSES)
             ->where('occurred_at', '>=', $since)
             ->count();
 

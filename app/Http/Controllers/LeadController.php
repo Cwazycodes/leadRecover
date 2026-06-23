@@ -17,8 +17,7 @@ class LeadController extends Controller
         protected Tenancy $tenancy,
         protected LeadService $leads,
         protected LeadRepositoryInterface $repository,
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): View
     {

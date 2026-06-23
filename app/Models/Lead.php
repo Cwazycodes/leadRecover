@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\BelongsToTenant;
+use Database\Factories\LeadFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,14 +14,19 @@ class Lead extends Model
 {
     use BelongsToTenant;
 
-    /** @use HasFactory<\Database\Factories\LeadFactory> */
+    /** @use HasFactory<LeadFactory> */
     use HasFactory;
 
     public const STATUS_NEW = 'new';
+
     public const STATUS_CONTACTED = 'contacted';
+
     public const STATUS_BOOKED = 'booked';
+
     public const STATUS_CONVERTED = 'converted';
+
     public const STATUS_LOST = 'lost';
+
     public const STATUS_STALE = 'stale';
 
     /** Statuses that mean the recovery flow should stop chasing the lead. */

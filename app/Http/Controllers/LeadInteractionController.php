@@ -13,9 +13,7 @@ use Illuminate\Validation\Rule;
 
 class LeadInteractionController extends Controller
 {
-    public function __construct(protected TwilioService $twilio, protected LeadService $leads)
-    {
-    }
+    public function __construct(protected TwilioService $twilio, protected LeadService $leads) {}
 
     public function store(Request $request, Lead $lead): RedirectResponse
     {

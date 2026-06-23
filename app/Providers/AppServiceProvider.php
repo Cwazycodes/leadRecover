@@ -3,11 +3,14 @@
 namespace App\Providers;
 
 use App\Models\Business;
+use App\Models\Lead;
 use App\Repositories\Contracts\LeadRepositoryInterface;
 use App\Repositories\LeadRepository;
 use App\Tenancy\Tenancy;
+use App\Tenancy\TenantScope;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
 
         // We wire events explicitly in EventServiceProvider, so turn off the
         // framework's auto-discovery to avoid registering listeners twice.
-        \Illuminate\Foundation\Support\Providers\EventServiceProvider::disableEventDiscovery();
+        EventServiceProvider::disableEventDiscovery();
     }
 
     public function boot(): void
@@ -54,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
         Route::bind('lead', function (string $value) {
             $businessId = request()->user()?->business_id;
 
-            return \App\Models\Lead::withoutGlobalScope(\App\Tenancy\TenantScope::class)
+            return Lead::withoutGlobalScope(TenantScope::class)
                 ->where('business_id', $businessId)
                 ->findOrFail($value);
         });

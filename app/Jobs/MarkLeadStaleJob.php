@@ -15,9 +15,7 @@ class MarkLeadStaleJob implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public Lead $lead)
-    {
-    }
+    public function __construct(public Lead $lead) {}
 
     public function handle(LeadService $leads): void
     {

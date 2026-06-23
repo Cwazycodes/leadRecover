@@ -19,9 +19,7 @@ class SendFollowUpReminderJob implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public Lead $lead, public int $stage)
-    {
-    }
+    public function __construct(public Lead $lead, public int $stage) {}
 
     public function handle(TwilioService $twilio, LeadService $leads, MessageComposer $composer): void
     {

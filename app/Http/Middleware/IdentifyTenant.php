@@ -14,9 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IdentifyTenant
 {
-    public function __construct(protected Tenancy $tenancy)
-    {
-    }
+    public function __construct(protected Tenancy $tenancy) {}
 
     public function handle(Request $request, Closure $next): Response
     {

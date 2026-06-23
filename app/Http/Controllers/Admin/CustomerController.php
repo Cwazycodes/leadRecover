@@ -10,9 +10,7 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function __construct(protected AnalyticsService $analytics)
-    {
-    }
+    public function __construct(protected AnalyticsService $analytics) {}
 
     public function index(Request $request): View
     {

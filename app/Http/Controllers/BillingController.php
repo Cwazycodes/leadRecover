@@ -11,9 +11,7 @@ use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class BillingController extends Controller
 {
-    public function __construct(protected Tenancy $tenancy)
-    {
-    }
+    public function __construct(protected Tenancy $tenancy) {}
 
     public function index(): View
     {

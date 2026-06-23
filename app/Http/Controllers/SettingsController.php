@@ -11,9 +11,7 @@ use Illuminate\Validation\Rule;
 
 class SettingsController extends Controller
 {
-    public function __construct(protected Tenancy $tenancy)
-    {
-    }
+    public function __construct(protected Tenancy $tenancy) {}
 
     public function edit(): View
     {

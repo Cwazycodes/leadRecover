@@ -18,9 +18,7 @@ class SendInitialOutreachJob implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public Lead $lead)
-    {
-    }
+    public function __construct(public Lead $lead) {}
 
     public function handle(TwilioService $twilio, LeadService $leads, MessageComposer $composer): void
     {

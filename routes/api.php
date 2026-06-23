@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\AnalyticsService;
+use App\Tenancy\Tenancy;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,10 +23,10 @@ Route::middleware('throttle:api')->prefix('v1')->group(function () {
 
     // Authenticated JSON: current business pipeline counts (cookie session).
     Route::middleware(['auth:web', 'tenant'])->get('/pipeline', function () {
-        $business = app(\App\Tenancy\Tenancy::class)->current();
+        $business = app(Tenancy::class)->current();
 
         return response()->json(
-            app(\App\Services\AnalyticsService::class)->statusBreakdown($business)
+            app(AnalyticsService::class)->statusBreakdown($business)
         );
     })->name('api.pipeline');
 });

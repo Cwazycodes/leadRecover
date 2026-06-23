@@ -9,6 +9,9 @@ use App\Models\Business;
 use App\Models\Lead;
 use App\Models\User;
 use App\Notifications\NewLeadNotification;
+use App\Services\LeadService;
+use App\Services\MessageComposer;
+use App\Services\TwilioService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
@@ -60,9 +63,9 @@ class MissedCallRecoveryTest extends TestCase
         $lead = Lead::factory()->for($business)->create(['status' => 'new']);
 
         (new SendInitialOutreachJob($lead))->handle(
-            app(\App\Services\TwilioService::class),
-            app(\App\Services\LeadService::class),
-            app(\App\Services\MessageComposer::class),
+            app(TwilioService::class),
+            app(LeadService::class),
+            app(MessageComposer::class),
         );
 
         $this->assertDatabaseHas('interactions', [

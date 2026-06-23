@@ -14,9 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class VerifyTwilioSignature
 {
-    public function __construct(protected TwilioService $twilio)
-    {
-    }
+    public function __construct(protected TwilioService $twilio) {}
 
     public function handle(Request $request, Closure $next): Response
     {

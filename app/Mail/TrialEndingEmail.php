@@ -14,9 +14,7 @@ class TrialEndingEmail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public Business $business)
-    {
-    }
+    public function __construct(public Business $business) {}
 
     public function envelope(): Envelope
     {

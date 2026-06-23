@@ -17,9 +17,7 @@ use Twilio\TwiML\MessagingResponse;
  */
 class TwilioMessageController extends Controller
 {
-    public function __construct(protected LeadService $leads)
-    {
-    }
+    public function __construct(protected LeadService $leads) {}
 
     public function incoming(Request $request): Response
     {

@@ -7,14 +7,13 @@ use App\Models\Lead;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
 
 class LeadRepliedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public Lead $lead, public Interaction $interaction)
-    {
-    }
+    public function __construct(public Lead $lead, public Interaction $interaction) {}
 
     /**
      * @return array<int, string>
@@ -32,7 +31,7 @@ class LeadRepliedNotification extends Notification implements ShouldQueue
         return [
             'lead_id' => $this->lead->id,
             'title' => 'Lead replied',
-            'message' => $this->lead->displayName().' replied: "'.\Illuminate\Support\Str::limit($this->interaction->body, 60).'"',
+            'message' => $this->lead->displayName().' replied: "'.Str::limit($this->interaction->body, 60).'"',
             'url' => route('leads.show', $this->lead),
         ];
     }

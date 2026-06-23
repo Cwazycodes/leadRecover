@@ -12,9 +12,7 @@ class NewLeadNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public Lead $lead)
-    {
-    }
+    public function __construct(public Lead $lead) {}
 
     /**
      * @return array<int, string>

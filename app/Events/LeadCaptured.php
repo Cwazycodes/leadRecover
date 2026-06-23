@@ -14,7 +14,5 @@ class LeadCaptured
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public Lead $lead)
-    {
-    }
+    public function __construct(public Lead $lead) {}
 }

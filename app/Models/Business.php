@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\BusinessFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,7 +17,7 @@ use Laravel\Cashier\Billable;
  */
 class Business extends Model
 {
-    /** @use HasFactory<\Database\Factories\BusinessFactory> */
+    /** @use HasFactory<BusinessFactory> */
     use Billable, HasFactory;
 
     protected $fillable = [

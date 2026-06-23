@@ -17,9 +17,7 @@ use Illuminate\Support\Facades\DB;
  */
 class LeadService
 {
-    public function __construct(protected Tenancy $tenancy)
-    {
-    }
+    public function __construct(protected Tenancy $tenancy) {}
 
     /**
      * Create (or reuse) a lead from an inbound missed call and persist the

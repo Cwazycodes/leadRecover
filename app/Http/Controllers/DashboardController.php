@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function __construct(protected Tenancy $tenancy, protected AnalyticsService $analytics)
-    {
-    }
+    public function __construct(protected Tenancy $tenancy, protected AnalyticsService $analytics) {}
 
     public function index(Request $request): View
     {
