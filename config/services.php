@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    'twilio' => [
+        'sid' => env('TWILIO_ACCOUNT_SID'),
+        'token' => env('TWILIO_AUTH_TOKEN'),
+        'from' => env('TWILIO_SMS_FROM'),              // SMS-capable Twilio number, e.g. +447700900123
+        'whatsapp_from' => env('TWILIO_WHATSAPP_FROM'), // e.g. whatsapp:+14155238886
+        // When false, the TwilioService logs messages instead of calling the API.
+        // Handy for local development without live credentials.
+        'enabled' => env('TWILIO_ENABLED', false),
+        // Skip X-Twilio-Signature validation (local only).
+        'validate_signature' => env('TWILIO_VALIDATE_SIGNATURE', true),
+    ],
+
 ];
