@@ -1,0 +1,89 @@
+# LeadRecover — production-style Docker stack.
+#
+#   docker compose build
+#   docker compose up -d
+#   open http://localhost:8080   (demo login: demo@leadrecover.test / password)
+#
+# Set the DB_*/REDIS_*/QUEUE_CONNECTION values in .env for Docker, e.g.:
+#   DB_CONNECTION=mysql  DB_HOST=mysql  DB_DATABASE=leadrecover
+#   DB_USERNAME=leadrecover  DB_PASSWORD=secret
+#   REDIS_HOST=redis  QUEUE_CONNECTION=redis  CACHE_STORE=redis  SESSION_DRIVER=redis
+
+services:
+  app:
+    build:
+      context: .
+      target: app
+    image: leadrecover-app:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      RUN_MIGRATIONS: "true"   # the app container owns schema migrations
+    volumes:
+      - app_code:/var/www/html
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  web:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - app_code:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+
+  queue:
+    image: leadrecover-app:latest
+    restart: unless-stopped
+    env_file: .env
+    command: php artisan queue:work --tries=3 --max-time=3600 --sleep=1
+    volumes:
+      - app_code:/var/www/html
+    depends_on:
+      - app
+      - redis
+      - mysql
+
+  scheduler:
+    image: leadrecover-app:latest
+    restart: unless-stopped
+    env_file: .env
+    command: php artisan schedule:work
+    volumes:
+      - app_code:/var/www/html
+    depends_on:
+      - app
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-leadrecover}
+      MYSQL_USER: ${DB_USERNAME:-leadrecover}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-secret}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD:-secret}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+
+volumes:
+  app_code:
+  mysql_data:
+  redis_data:
