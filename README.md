@@ -155,6 +155,52 @@ password** (`/admin`).
 
 ---
 
+## Starting everything locally (dev)
+
+You need four things running at once. Open four terminal tabs:
+
+**Tab 1 — Laravel server**
+```bash
+php artisan serve --port=8001
+```
+
+**Tab 2 — Vite (frontend assets with hot reload)**
+```bash
+npm run dev
+```
+
+**Tab 3 — Queue worker (processes outbound SMS jobs)**
+```bash
+php artisan queue:work
+```
+
+**Tab 4 — ngrok (public HTTPS tunnel for webhooks)**
+```bash
+# First time only — log in and use your free static domain:
+ngrok config add-authtoken <your-ngrok-token>
+
+# Then start the tunnel using your free static domain:
+ngrok http --domain=<your-static-subdomain>.ngrok-free.app 8001
+```
+
+> Your free static ngrok domain never changes between restarts. Find it at
+> **ngrok dashboard → Domains**. Use it everywhere below.
+
+### Pointing webhooks at your tunnel
+
+**Stripe** — go to Stripe Dashboard → Developers → Webhooks → Add destination:
+- URL: `https://<your-static-subdomain>.ngrok-free.app/stripe/webhook`
+- Events: `invoice.payment_failed`, `customer.subscription.deleted`, `customer.subscription.trial_will_end`
+- Copy the `whsec_...` signing secret into `.env` as `STRIPE_WEBHOOK_SECRET`
+
+**Twilio** — go to Twilio Console → Phone Numbers → your number → Configure:
+- Voice webhook (incoming call): `https://<your-static-subdomain>.ngrok-free.app/webhooks/twilio/voice`
+- Voice status callback: `https://<your-static-subdomain>.ngrok-free.app/webhooks/twilio/voice/status`
+- Messaging webhook (inbound SMS/WhatsApp): `https://<your-static-subdomain>.ngrok-free.app/webhooks/twilio/message`
+- Messaging status callback: `https://<your-static-subdomain>.ngrok-free.app/webhooks/twilio/message/status`
+
+---
+
 ## Running with Docker
 
 The compose stack runs the app (php-fpm), nginx, a queue worker, the scheduler,
